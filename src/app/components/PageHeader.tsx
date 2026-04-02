@@ -24,6 +24,8 @@ export default function PageHeader({
 
   useEffect(() => {
     const savedEmail = localStorage.getItem('userEmail');
+    const savedFacultyId = localStorage.getItem('facultyId');
+    
     if (savedEmail) {
       const namePart = savedEmail.split('@')[0];
       const formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
@@ -31,6 +33,9 @@ export default function PageHeader({
       
       setUserName(formattedName);
       setInitials(derivedInitials);
+    } else if (savedFacultyId) {
+      setUserName(savedFacultyId.toUpperCase());
+      setInitials(savedFacultyId.slice(0, 2).toUpperCase());
     }
   }, []);
 
@@ -47,6 +52,7 @@ export default function PageHeader({
 
   const handleLogout = () => {
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('facultyId');
     router.push('/');
   };
 

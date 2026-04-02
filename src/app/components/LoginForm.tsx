@@ -6,7 +6,7 @@ import styles from '../page.module.css';
 
 export default function LoginForm() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -15,21 +15,26 @@ export default function LoginForm() {
     setIsLoading(true);
     // Simulate login delay
     setTimeout(() => {
-      localStorage.setItem('userEmail', email);
-      router.push('/dashboard');
+      if (identifier.includes('@')) {
+        localStorage.setItem('userEmail', identifier);
+        router.push('/dashboard');
+      } else {
+        localStorage.setItem('facultyId', identifier);
+        router.push('/faculty');
+      }
     }, 800);
   };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <div className={styles.inputGroup}>
-        <label htmlFor="email">Email Address</label>
+        <label htmlFor="identifier">Email or Faculty ID</label>
         <input
-          id="email"
-          type="email"
-          placeholder="admin@school.edu"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          id="identifier"
+          type="text"
+          placeholder="admin@school.edu or FAC123"
+          value={identifier}
+          onChange={(e) => setIdentifier(e.target.value)}
           required
         />
       </div>

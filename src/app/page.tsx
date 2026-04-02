@@ -19,7 +19,7 @@ export default function LoginPage() {
           <h1>
             Welcome Back
           </h1>
-          <p>Please sign in to access the Admin Overview</p>
+          <p>Please sign in to access your portal</p>
         </div>
         <LoginForm />
       </div>

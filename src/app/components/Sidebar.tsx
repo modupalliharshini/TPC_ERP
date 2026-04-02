@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import styles from './Sidebar.module.css';
-import ViewSwitcher from './ViewSwitcher';
 import {
   LayoutDashboard,
   GraduationCap,
@@ -54,7 +53,6 @@ export default function Sidebar() {
         />
       </div>
 
-      <ViewSwitcher />
 
       <nav>
         <ul className={styles.navList}>

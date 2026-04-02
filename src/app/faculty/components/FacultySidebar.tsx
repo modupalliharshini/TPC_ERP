@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import styles from './FacultySidebar.module.css';
-import ViewSwitcher from '../../components/ViewSwitcher';
 import {
   LayoutDashboard,
   BookOpen,
@@ -47,7 +46,6 @@ export default function FacultySidebar() {
         />
       </div>
 
-      <ViewSwitcher />
 
       <nav className={styles.nav}>
         <ul className={styles.navList}>
