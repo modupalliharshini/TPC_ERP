@@ -67,7 +67,7 @@ export default function FacultyDashboard() {
       <div className={styles.dashboardContent}>
         <section className={styles.scheduleSection}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Today's Schedule</h2>
+            <h2 className={styles.sectionTitle}>Today&apos;s Schedule</h2>
             <button className={styles.viewBtn}>View Calendar</button>
           </div>
           <FacultySchedule type="daily" items={TODAY_SCHEDULE} />
