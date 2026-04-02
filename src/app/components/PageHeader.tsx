@@ -6,8 +6,7 @@ import { LogOut, User, Settings, ChevronDown } from 'lucide-react';
 import styles from './PageHeader.module.css';
 
 interface PageHeaderProps {
-  titleStart: string;
-  titleHighlight: string;
+  titleStartght: string;
   actionElement?: React.ReactNode;
 }
 
@@ -28,7 +27,7 @@ export default function PageHeader({
       const namePart = savedEmail.split('@')[0];
       const formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
       const derivedInitials = namePart.slice(0, 2).toUpperCase();
-      
+
       setUserName(formattedName);
       setInitials(derivedInitials);
     }
@@ -55,14 +54,14 @@ export default function PageHeader({
       <h1 className={styles.title}>
         {titleStart} <span className={styles.titleHighlight}>{titleHighlight}</span>
       </h1>
-      
+
       <div className={styles.actions}>
         {actionElement && <div className={styles.actionNode}>{actionElement}</div>}
-        
+
         <div className={styles.profileContainer} ref={dropdownRef}>
-          <button 
+          <button
             id="profile-dropdown-trigger"
-            className={styles.profileTrigger} 
+            className={styles.profileTrigger}
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             aria-expanded={isDropdownOpen}
           >
@@ -87,9 +86,9 @@ export default function PageHeader({
                 <span>Account Settings</span>
               </button>
               <div className={styles.dropdownDivider}></div>
-              <button 
+              <button
                 id="logout-button"
-                className={`${styles.dropdownItem} ${styles.logoutItem}`} 
+                className={`${styles.dropdownItem} ${styles.logoutItem}`}
                 onClick={handleLogout}
               >
                 <LogOut size={18} />
