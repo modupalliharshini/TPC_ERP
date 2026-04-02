@@ -1,6 +1,7 @@
 .dashboardWrapper {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background-color: var(--bg-color);
 }
 
@@ -9,7 +10,8 @@
   margin-left: 250px; /* To account for fixed Sidebar */
   padding: 2.5rem 2rem;
   background-color: var(--bg-color);
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
 }
 
 .container {
