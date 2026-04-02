@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
+import { LogOut, User, Settings, ChevronDown } from 'lucide-react';
 import styles from './PageHeader.module.css';
 
 interface PageHeaderProps {
@@ -16,6 +18,9 @@ export default function PageHeader({
 }: PageHeaderProps) {
   const [userName, setUserName] = useState('Admin');
   const [initials, setInitials] = useState('AD');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const savedEmail = localStorage.getItem('userEmail');
@@ -29,6 +34,22 @@ export default function PageHeader({
     }
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('userEmail');
+    router.push('/');
+  };
+
   return (
     <header className={styles.header}>
       <h1 className={styles.title}>
@@ -37,12 +58,48 @@ export default function PageHeader({
       
       <div className={styles.actions}>
         {actionElement && <div className={styles.actionNode}>{actionElement}</div>}
-        <div className={styles.userProfile}>
-          <span className={styles.welcomeText}>Welcome back,</span>
-          <span className={styles.userName}>{userName}</span>
+        
+        <div className={styles.profileContainer} ref={dropdownRef}>
+          <button 
+            id="profile-dropdown-trigger"
+            className={styles.profileTrigger} 
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            aria-expanded={isDropdownOpen}
+          >
+            <div className={styles.userProfile}>
+              <span className={styles.welcomeText}>Welcome back,</span>
+              <span className={styles.userName}>{userName}</span>
+            </div>
+            <div className={styles.avatarWrapper}>
+              <div className={styles.avatar}>{initials}</div>
+              <ChevronDown className={`${styles.chevron} ${isDropdownOpen ? styles.chevronOpen : ''}`} size={16} />
+            </div>
+          </button>
+
+          {isDropdownOpen && (
+            <div className={styles.dropdownMenu} id="profile-dropdown-menu">
+              <button className={styles.dropdownItem}>
+                <User size={18} />
+                <span>My Profile</span>
+              </button>
+              <button className={styles.dropdownItem}>
+                <Settings size={18} />
+                <span>Account Settings</span>
+              </button>
+              <div className={styles.dropdownDivider}></div>
+              <button 
+                id="logout-button"
+                className={`${styles.dropdownItem} ${styles.logoutItem}`} 
+                onClick={handleLogout}
+              >
+                <LogOut size={18} />
+                <span>Logout</span>
+              </button>
+            </div>
+          )}
         </div>
-        <div className={styles.avatar}>{initials}</div>
       </div>
     </header>
   );
 }
+
