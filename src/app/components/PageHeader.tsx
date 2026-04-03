@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { LogOut, User, Settings, ChevronDown } from 'lucide-react';
 import styles from './PageHeader.module.css';
 
@@ -21,22 +21,35 @@ export default function PageHeader({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
-    const savedEmail = localStorage.getItem('userEmail');
-    const savedFacultyId = localStorage.getItem('facultyId');
-    
-    if (savedEmail) {
-      const namePart = savedEmail.split('@')[0];
-      const formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
-      const derivedInitials = namePart.slice(0, 2).toUpperCase();
+    const loadProfile = () => {
+      const savedEmail = localStorage.getItem('userEmail');
+      const savedFacultyId = localStorage.getItem('facultyId');
+      const savedStudentId = localStorage.getItem('studentId');
       
-      setUserName(formattedName);
-      setInitials(derivedInitials);
-    } else if (savedFacultyId) {
-      setUserName(savedFacultyId.toUpperCase());
-      setInitials(savedFacultyId.slice(0, 2).toUpperCase());
-    }
+      if (savedEmail) {
+        const namePart = savedEmail.split('@')[0];
+        const formattedName = namePart.charAt(0).toUpperCase() + namePart.slice(1);
+        const derivedInitials = namePart.slice(0, 2).toUpperCase();
+        
+        setUserName(formattedName);
+        setInitials(derivedInitials);
+      } else if (savedStudentId) {
+        const profileName = localStorage.getItem('studentProfileName') || 'Alex Johnson';
+        const computedInitials = profileName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'AJ';
+        setUserName(savedStudentId.toUpperCase());
+        setInitials(computedInitials);
+      } else if (savedFacultyId) {
+        setUserName(savedFacultyId.toUpperCase());
+        setInitials(savedFacultyId.slice(0, 2).toUpperCase());
+      }
+    };
+
+    loadProfile();
+    window.addEventListener('profileUpdated', loadProfile);
+    return () => window.removeEventListener('profileUpdated', loadProfile);
   }, []);
 
   // Close dropdown when clicking outside
@@ -53,6 +66,7 @@ export default function PageHeader({
   const handleLogout = () => {
     localStorage.removeItem('userEmail');
     localStorage.removeItem('facultyId');
+    localStorage.removeItem('studentId');
     router.push('/');
   };
 
@@ -84,7 +98,15 @@ export default function PageHeader({
 
           {isDropdownOpen && (
             <div className={styles.dropdownMenu} id="profile-dropdown-menu">
-              <button className={styles.dropdownItem}>
+              <button 
+                className={styles.dropdownItem}
+                onClick={() => {
+                  setIsDropdownOpen(false);
+                  if (pathname.startsWith('/student')) {
+                    router.push('/student/profile');
+                  }
+                }}
+              >
                 <User size={18} />
                 <span>My Profile</span>
               </button>

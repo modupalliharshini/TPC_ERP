@@ -9,32 +9,44 @@ export default function LoginForm() {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     // Simulate login delay
     setTimeout(() => {
-      if (identifier.includes('@')) {
+      const id = identifier.toLowerCase().trim();
+      if (id.includes('@')) {
         localStorage.setItem('userEmail', identifier);
         router.push('/dashboard');
-      } else {
+      } else if (id.startsWith('st')) {
+        localStorage.setItem('studentId', identifier);
+        router.push('/student');
+      } else if (id.startsWith('fac')) {
         localStorage.setItem('facultyId', identifier);
         router.push('/faculty');
+      } else {
+        setError('invalid email or id');
+        setIsLoading(false);
       }
     }, 800);
   };
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
+      {error && <div className={styles.errorMessage}>{error}</div>}
       <div className={styles.inputGroup}>
-        <label htmlFor="identifier">Email or Faculty ID</label>
+        <label htmlFor="identifier">Email, Faculty ID or Student ID</label>
         <input
           id="identifier"
           type="text"
-          placeholder="admin@school.edu or FAC123"
+          placeholder="admin@school.edu, FAC123 or ST123"
           value={identifier}
-          onChange={(e) => setIdentifier(e.target.value)}
+          onChange={(e) => {
+            setIdentifier(e.target.value);
+            if (error) setError('');
+          }}
           required
         />
       </div>

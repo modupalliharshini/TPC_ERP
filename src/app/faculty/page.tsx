@@ -91,7 +91,7 @@ export default function FacultyDashboard() {
                   <div className={styles.assignmentName}>{sub.assignment}</div>
                 </div>
                 <div className={styles.submissionStatus}>
-                  <span className={`${styles.statusBadge} ${styles[sub.status.toLowerCase().replace(' ', '')]}`}>
+                  <span className={`${styles.statusBadge} ${styles[sub.status.toLowerCase().replace(/[^a-z]/g, '')]}`}>
                     {sub.status}
                   </span>
                   <span className={styles.timeText}>{sub.time}</span>
