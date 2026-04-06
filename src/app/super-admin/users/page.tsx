@@ -111,7 +111,7 @@ export default function GlobalUsers() {
               ))}
               {filteredUsers.length === 0 && (
                 <tr>
-                  <td colSpan={6} style={{textAlign: 'center', py: '3rem', color: '#64748b'}}>No users found matching your criteria.</td>
+                  <td colSpan={6} style={{textAlign: 'center', paddingTop: '3rem', paddingBottom: '3rem', color: '#64748b'}}>No users found matching your criteria.</td>
                 </tr>
               )}
             </tbody>
