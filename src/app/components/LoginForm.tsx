@@ -17,7 +17,10 @@ export default function LoginForm() {
     // Simulate login delay
     setTimeout(() => {
       const id = identifier.toLowerCase().trim();
-      if (id.includes('@')) {
+      if (id.startsWith('sa')) {
+        localStorage.setItem('superAdminId', identifier);
+        router.push('/super-admin');
+      } else if (id.includes('@')) {
         localStorage.setItem('userEmail', identifier);
         router.push('/dashboard');
       } else if (id.startsWith('st')) {
@@ -37,11 +40,11 @@ export default function LoginForm() {
     <form className={styles.form} onSubmit={handleSubmit}>
       {error && <div className={styles.errorMessage}>{error}</div>}
       <div className={styles.inputGroup}>
-        <label htmlFor="identifier">Email, Faculty ID or Student ID</label>
+        <label htmlFor="identifier">Email, Admin ID, Faculty ID or Student ID</label>
         <input
           id="identifier"
           type="text"
-          placeholder="admin@school.edu, FAC123 or ST123"
+          placeholder="SA123 (Super Admin), FAC123 or ST123"
           value={identifier}
           onChange={(e) => {
             setIdentifier(e.target.value);
