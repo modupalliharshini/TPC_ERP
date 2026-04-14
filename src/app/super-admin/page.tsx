@@ -11,6 +11,7 @@ import styles from './page.module.css';
 import ERPSection from './sections/ERPSection';
 import WhatsAppSection from './sections/WhatsAppSection';
 import SocialMediaSection from './sections/SocialMediaSection';
+import CanvasSection from './sections/CanvasSection';
 import SuperAdminHeader from '../components/SuperAdminHeader';
 
 type DashboardTab = 'ERP' | 'Canvas' | 'Whatsapp' | 'Social Media';
@@ -27,13 +28,7 @@ export default function SuperAdminDashboard() {
       case 'Social Media':
         return <SocialMediaSection />;
       case 'Canvas':
-        return (
-          <div className={styles.sectionContent} style={{textAlign: 'center', padding: '5rem', background: 'white', borderRadius: '20px'}}>
-             <Palette size={64} color="#64748b" style={{marginBottom: '1rem'}} />
-             <h2 className={styles.title} style={{fontSize: '1.5rem', color: '#64748b'}}>Canvas Integration</h2>
-             <p style={{color: '#94a3b8'}}>This module is currently static and under development.</p>
-          </div>
-        );
+        return <CanvasSection />;
       default:
         return <ERPSection />;
     }
